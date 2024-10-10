@@ -20,6 +20,10 @@ let package = Package(
         .library(
             name: "Markdown",
             targets: ["Markdown"]),
+        .library(
+            name: "MarkdownBuilder",
+            targets: ["MarkdownBuilder"]
+        )
     ],
     targets: [
         .target(
@@ -32,10 +36,18 @@ let package = Package(
             exclude: [
                 "CMakeLists.txt"
             ]),
+        .target(
+            name: "MarkdownBuilder",
+            dependencies: [.target(name: "Markdown")]
+        ),
         .testTarget(
             name: "MarkdownTests",
             dependencies: ["Markdown"],
             resources: [.process("Visitors/Everything.md")]),
+        .testTarget(
+            name: "MarkdownBuilderTests",
+            dependencies: [.target(name: "MarkdownBuilder")]
+        ),
         .target(name: "CAtomic"),
     ]
 )
