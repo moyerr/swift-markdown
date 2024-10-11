@@ -1,40 +1,40 @@
 import Markdown
 
 @resultBuilder
-public enum InlineMarkupBuilder {
-    public static func buildBlock<each Component: InlineMarkup>(
-        _ components: repeat each Component
+enum InlineMarkupBuilder {
+    static func buildExpression(
+        _ expression: some InlineMarkup
     ) -> [any InlineMarkup] {
-        var result = [any InlineMarkup]()
-
-        for component in repeat each components {
-            result.append(component)
-        }
-
-        return result
+        [expression]
     }
 
-    public static func buildOptional(
+    static func buildBlock(
+        _ components: [any InlineMarkup]...
+    ) -> [any InlineMarkup] {
+        components.flatMap(\.self)
+    }
+
+    static func buildOptional(
         _ component: [any InlineMarkup]?
     ) -> [any InlineMarkup] {
         component ?? []
     }
 
-    public static func buildArray(
-        _ components: [[any InlineMarkup]]
-    ) -> [any InlineMarkup] {
-        components.flatMap { $0 }
-    }
-
-    public static func buildEither(
+    static func buildEither(
         first component: [any InlineMarkup]
     ) -> [any InlineMarkup] {
-        component
+        return component
     }
 
-    public static func buildEither(
+    static func buildEither(
         second component: [any InlineMarkup]
     ) -> [any InlineMarkup] {
-        component
+        return component
+    }
+
+    static func buildArray(
+        _ components: [[any InlineMarkup]]
+    ) -> [any InlineMarkup] {
+        components.flatMap(\.self)
     }
 }

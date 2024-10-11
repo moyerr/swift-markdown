@@ -4,21 +4,30 @@ import Markdown
 
 final class BlockMarkupBuilderTests: XCTestCase {
     func testExample() throws {
+        let condition = false
         let document = Document {
-            Paragraph {
-                Text("First")
+            Heading(level: 2) {
+                Text("Heading")
             }
+
             Paragraph {
-                Text("Second")
+                Text("This is powered by a ")
+                InlineCode("@resultBuilder")
+                SoftBreak()
+                Text("wow")
+            }
+
+
+            if condition {
+                Paragraph(Text("Second paragraph"))
             }
         }
         let expectedDump = """
-            Document
-            ├─ Paragraph
-            │  └─ Text "First"
-            └─ Paragraph
-               └─ Text "Second"
+            ## Heading
+
+            This is powered by a `@resultBuilder`
+            wow
             """
-        XCTAssertEqual(expectedDump, document.debugDescription())
+        XCTAssertEqual(expectedDump, document.format())
     }
 }
